@@ -2,7 +2,7 @@ import time
 from ctypes import cdll, c_int, c_float, c_bool, c_void_p, POINTER
 
 ###### Wrapping C library ######
-MCP4728 = cdll.LoadLibrary("./MCP4728.so")
+MCP4728 = cdll.LoadLibrary("./libMCP4728.so")
 
 """
 # object = initialise(sda, scl, ldac, address)
@@ -15,7 +15,7 @@ chip = initialise(2,3,-1,0x61)       # opens an instance of the chip at address 
 chip = initialise(16,20,21,-1)       # opens an instance of the chip at an unknown address and allows reading/writing the address
 chip = initialise(0,1,16,-1)         # opens an instance of the chip at an unknown address and allows both reading/writing the address and changing the output voltages over the i2c-0 bus
 """
-initialise = MCP4728.initialise
+initialise = MCP4728.mcp4728_initialize
 initialise.restype = c_void_p
 initialise.argtypes = [c_int, c_int, c_int, c_int]
 
@@ -24,7 +24,7 @@ deinitialise(object)
 
 Removes the instance of the chip.  Recommended but not mandatory at the end of the program.
 """
-deinitialise = MCP4728.deinitialise
+deinitialise = MCP4728.mcp4728_deinitialize
 deinitialise.argtypes = [c_void_p]
 
 """
@@ -32,7 +32,7 @@ address = getaddress(object)
 
 Reads the current chip address.  The obtained address is automatically stored by the library.  LDAC mandatory.
 """
-getaddress = MCP4728.getaddress
+getaddress = MCP4728.mcp4728_getaddress
 getaddress.argtypes = [c_void_p]
 
 """
@@ -40,7 +40,7 @@ setaddress(object, address)
 
 Writes the new chip address.  The current chip address must be supplied by the programmer or read with getaddress beforehand.  LDAC mandatory.
 """
-setaddress = MCP4728.setaddress
+setaddress = MCP4728.mcp4728_setaddress
 setaddress.argtypes = [c_void_p, c_int]
 
 """
@@ -48,7 +48,7 @@ singleinternal(object, channel, voltage, eeprom)
 
 Sets the absolute voltange on the channel using the internal voltage reference.  The eeprom indicates whether the voltage is written to the EEPROM of the chip.  SDA/SLC must be 0/1 or 2/3.
 """
-singleinternal = MCP4728.singleinternal
+singleinternal = MCP4728.mcp4728_singleinternal
 singleinternal.argtypes = [c_void_p, c_int, c_float, c_bool]
 
 """
@@ -56,7 +56,7 @@ singleexternal(object, channel, voltage, eeprom)
 
 Sets the relative voltange on the channel using the external voltage reference.  The eeprom indicates whether the voltage is written to the EEPROM of the chip.  SDA/SLC must be 0/1 or 2/3.
 """
-singleexternal = MCP4728.singleexternal
+singleexternal = MCP4728.mcp4728_singleexternal
 singleexternal.argtypes = [c_void_p, c_int, c_float, c_bool]
 
 """
@@ -64,7 +64,7 @@ multipleinternal(object, [voltages], eeprom)
 
 Sets the absolute voltanges on all four channels using the internal voltage reference.  The eeprom indicates whether the voltages are written to the EEPROM of the chip.  SDA/SLC must be 0/1 or 2/3.
 """
-multipleinternal = MCP4728.multipleinternal
+multipleinternal = MCP4728.mcp4728_multipleinternal
 multipleinternal.argtypes = [c_void_p, POINTER(c_float), c_bool]
 
 """
@@ -72,7 +72,7 @@ multipleexternal(object, [voltages], eeprom)
 
 Sets the relative voltanges on all four channels using the external voltage reference.  The eeprom indicates whether the voltages are written to the EEPROM of the chip.  SDA/SLC must be 0/1 or 2/3.
 """
-multipleexternal = MCP4728.multipleexternal
+multipleexternal = MCP4728.mcp4728_multipleexternal
 multipleexternal.argtypes = [c_void_p, POINTER(c_float), c_bool]
 
 

@@ -348,7 +348,7 @@ int single_raw(unsigned channel, unsigned reference, unsigned gain, unsigned val
 /* GLOBAL INITIALIZATION METHODS */
 
 /* initialises communications */
-struct chip *initialise(int sda, int scl, int ldac, int address)
+struct chip *mcp4728_initialize(int sda, int scl, int ldac, int address)
 {
    struct chip *tempchip = malloc(sizeof(struct chip));
 
@@ -397,7 +397,7 @@ struct chip *initialise(int sda, int scl, int ldac, int address)
 }
 
 /* deinitialise communications */
-int deinitialise(struct chip *tempchip)
+int mcp4728_deinitialize(struct chip *tempchip)
 {
    if (tempchip->bus == 0) count_i2c_0 = count_i2c_0 - 1;
    if (tempchip->bus == 1) count_i2c_1 = count_i2c_1 - 1;
@@ -420,7 +420,7 @@ int deinitialise(struct chip *tempchip)
 /* GLOBAL GPIO METHODS */
 
 /* gets the DAC address */
-int getaddress(struct chip *tempchip)
+int mcp4728_getaddress(struct chip *tempchip)
 {
    unsigned i;
    int ret;
@@ -470,7 +470,7 @@ int getaddress(struct chip *tempchip)
 }
 
 /* sets the DAC address */
-int setaddress(struct chip *tempchip, unsigned addr)
+int mcp4728_setaddress(struct chip *tempchip, unsigned addr)
 {
    unsigned i;
    int ret;
@@ -515,7 +515,7 @@ int setaddress(struct chip *tempchip, unsigned addr)
 /* GLOBAL I2C METHODS */
 
 /* writes single value to the selected DAC channel using internal reference - channels 1 to 4 */
-int singleinternal(struct chip *tempchip, int channel, float volt, bool eeprom)
+int mcp4728_singleinternal(struct chip *tempchip, int channel, float volt, bool eeprom)
 {
    unsigned gain=1;
    unsigned value;
@@ -531,7 +531,7 @@ int singleinternal(struct chip *tempchip, int channel, float volt, bool eeprom)
 }
 
 /* writes single value to the selected DAC channel using external reference - channels 1 to 4 */
-int singleexternal(struct chip *tempchip, int channel, float rel, bool eeprom)
+int mcp4728_singleexternal(struct chip *tempchip, int channel, float rel, bool eeprom)
 {
    unsigned value;
 
@@ -545,7 +545,7 @@ int singleexternal(struct chip *tempchip, int channel, float rel, bool eeprom)
 }
 
 /* writes four values to the DAC channels using internal reference */
-int multipleinternal(struct chip *tempchip, float volts[], bool eeprom)
+int mcp4728_multipleinternal(struct chip *tempchip, float volts[], bool eeprom)
 {
    unsigned i;
    unsigned gain;
@@ -568,7 +568,7 @@ int multipleinternal(struct chip *tempchip, float volts[], bool eeprom)
 }
 
 /* writes four values to DAC channels using external reference */
-int multipleexternal(struct chip *tempchip, float rels[], bool eeprom)
+int mcp4728_multipleexternal(struct chip *tempchip, float rels[], bool eeprom)
 {
    unsigned i;
    unsigned values[4];
